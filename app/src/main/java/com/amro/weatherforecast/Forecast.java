@@ -4,6 +4,7 @@ import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +20,13 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
+
 /**
  * Created by amro on 3/12/16.
  */
 public class Forecast extends Fragment
 {
-
     ArrayAdapter<String> adapter;
-
     public Forecast()
     {
     }
@@ -62,6 +62,7 @@ public class Forecast extends Fragment
     class FetchWeatherTask extends AsyncTask<Void, Void, Void>
     {
 
+        final private String TAG = FetchWeatherTask.class.getSimpleName();
         @Override
         protected Void doInBackground(Void... params)
         {
@@ -107,7 +108,7 @@ public class Forecast extends Fragment
                 }
                 forecastJsonStr = buffer.toString();
             } catch (IOException e) {
-                Log.e("Forecast", "Error ", e);
+                Log.e(TAG, "Error ", e);
                 // If the code didn't successfully get the weather data, there's no point in attemping
                 // to parse it.
                 return null;
@@ -119,7 +120,7 @@ public class Forecast extends Fragment
                     try {
                         reader.close();
                     } catch (final IOException e) {
-                        Log.e("Forecast", "Error closing stream", e);
+                        Log.e(TAG, "Error closing stream", e);
                     }
                 }
             }
