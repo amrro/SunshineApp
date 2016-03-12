@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 
@@ -14,6 +16,8 @@ import java.util.ArrayList;
  */
 public class PlaceholderFragment extends Fragment
 {
+
+    ArrayAdapter<String> adapter;
 
     public PlaceholderFragment()
     {
@@ -30,6 +34,18 @@ public class PlaceholderFragment extends Fragment
         fakeData.add("Sun- Sunny - 35/30");
         fakeData.add("Mon - Rainy - 30/20");
         fakeData.add("Thru   - Cloudy - 20/15");
+
+        adapter = new ArrayAdapter<String>(
+                getActivity(),
+                R.layout.list_item_forecast,
+                R.id.list_item_forecast_textview,
+                fakeData
+        );
+
+
+
+        ListView list = (ListView) view.findViewById(R.id.listview_forecast);
+        list.setAdapter(adapter);
 
         return view;
     }
