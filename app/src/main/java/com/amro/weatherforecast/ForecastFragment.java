@@ -7,6 +7,9 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -24,10 +27,35 @@ import java.util.ArrayList;
 /**
  * Created by amro on 3/12/16.
  */
-public class Forecast extends Fragment
+public class ForecastFragment extends Fragment
 {
     ArrayAdapter<String> adapter;
-    public Forecast()
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState)
+    {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        inflater.inflate(R.menu.forecastfragment, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+        if (id == R.id.action_referesh)
+            return true;
+
+        /// Why??
+        return super.onOptionsItemSelected(item);
+    }
+
+    public ForecastFragment()
     {
     }
 
