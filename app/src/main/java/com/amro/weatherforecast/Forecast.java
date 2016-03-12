@@ -21,12 +21,12 @@ import java.util.ArrayList;
 /**
  * Created by amro on 3/12/16.
  */
-public class PlaceholderFragment extends Fragment
+public class Forecast extends Fragment
 {
 
     ArrayAdapter<String> adapter;
 
-    public PlaceholderFragment()
+    public Forecast()
     {
     }
 
@@ -97,7 +97,7 @@ public class PlaceholderFragment extends Fragment
             }
             forecastJsonStr = buffer.toString();
         } catch (IOException e) {
-            Log.e("PlaceholderFragment", "Error ", e);
+            Log.e("Forecast", "Error ", e);
             // If the code didn't successfully get the weather data, there's no point in attemping
             // to parse it.
             return null;
@@ -109,7 +109,7 @@ public class PlaceholderFragment extends Fragment
                 try {
                     reader.close();
                 } catch (final IOException e) {
-                    Log.e("PlaceholderFragment", "Error closing stream", e);
+                    Log.e("Forecast", "Error closing stream", e);
                 }
             }
         }
