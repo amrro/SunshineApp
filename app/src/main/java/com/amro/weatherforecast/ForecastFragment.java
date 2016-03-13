@@ -49,12 +49,14 @@ public class ForecastFragment extends Fragment
     {
         int id = item.getItemId();
         if (id == R.id.action_referesh)
+        {
+            FetchWeatherTask fetchTask  =new FetchWeatherTask();
+            fetchTask.execute();
             return true;
-
+        }
         /// Why??
         return super.onOptionsItemSelected(item);
     }
-
     public ForecastFragment()
     {
     }
