@@ -1,5 +1,6 @@
 package com.amro.weatherforecast;
 
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
@@ -51,7 +52,7 @@ public class ForecastFragment extends Fragment
         if (id == R.id.action_referesh)
         {
             FetchWeatherTask fetchTask  =new FetchWeatherTask();
-            fetchTask.execute();
+            fetchTask.execute("94043");
             return true;
         }
         /// Why??
@@ -89,12 +90,12 @@ public class ForecastFragment extends Fragment
     }
 
 
-    class FetchWeatherTask extends AsyncTask<Void, Void, Void>
+    class FetchWeatherTask extends AsyncTask<String, Void, Void>
     {
 
         final private String TAG = FetchWeatherTask.class.getSimpleName();
         @Override
-        protected Void doInBackground(Void... params)
+        protected Void doInBackground(String... params)
         {
             // These two need to be declared outside the try/catch
             // so that they can be closed in the finally block.
@@ -108,7 +109,33 @@ public class ForecastFragment extends Fragment
                 // Construct the URL for the OpenWeatherMap query
                 // Possible parameters are avaiable at OWM's forecast API page, at
                 // http://openweathermap.org/API#forecast
-                URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
+
+                //URL url = new URL("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7");
+
+                final String BASE_URL = "http://api.openweathermap.org/data/2.5/forecast/daily?";
+                // http://api.openweathermap.org/data/2.5/forecast/daily?
+                final String QUERY_PARAM = "q";         // q=94043 postal code&
+                final String QUERY_MODE = "mode";       // mode=json&
+                final String QUERY_UNIT = "units";      // units=metric&
+                final String QUERY_DAYS = "cnt";        // cnt=7
+                final String API_KEY    = "APPID";
+
+                String mode = "json";
+                String units = "metric";
+                String myKey = "eea052d407132bde75a5ae66e06cfd3b";
+
+
+                Uri builderURI = Uri.parse(BASE_URL).buildUpon()
+                        .appendQueryParameter(QUERY_PARAM, params[0])           // adds the postal code.
+                        .appendQueryParameter(QUERY_MODE, mode)                 // changes the mode to json.
+                        .appendQueryParameter(QUERY_UNIT, units)                // specifies the metric OR imperial.
+                        .appendQueryParameter(QUERY_DAYS, Integer.toString(7))  // specifies number of days.
+                        .appendQueryParameter(API_KEY, myKey)
+                        .build();
+
+                URL url = new URL(builderURI.toString());
+
+                Log.v(TAG, "Built URI " + builderURI.toString());
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
