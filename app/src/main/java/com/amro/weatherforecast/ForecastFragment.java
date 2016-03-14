@@ -59,7 +59,8 @@ public class ForecastFragment extends Fragment
         if (id == R.id.action_referesh)
         {
             FetchWeatherTask fetchTask  =new FetchWeatherTask();
-            fetchTask.execute("94043");
+//          fetchTask.execute("94043");
+            fetchTask.execute("cairo");
             return true;
         }
         /// Why??
