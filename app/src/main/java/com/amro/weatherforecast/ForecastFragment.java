@@ -58,7 +58,7 @@ public class ForecastFragment extends Fragment
         int id = item.getItemId();
         if (id == R.id.action_referesh)
         {
-            FetchWeatherTask fetchTask  =new FetchWeatherTask();
+            FetchWeatherTask fetchTask  = new FetchWeatherTask();
 //          fetchTask.execute("94043");
             fetchTask.execute("cairo");
             return true;
@@ -143,8 +143,6 @@ public class ForecastFragment extends Fragment
                         .build();
 
                 URL url = new URL(builderURI.toString());
-
-                Log.v(TAG, "Built URI " + builderURI.toString());
 
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
@@ -307,9 +305,6 @@ public class ForecastFragment extends Fragment
                 resultStrs[i] = day + " - " + description + " - " + highAndLow;
             }
 
-            for (String s : resultStrs) {
-                Log.v(TAG, "Forecast entry: " + s);
-            }
             return resultStrs;
 
         }
