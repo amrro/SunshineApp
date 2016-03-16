@@ -75,10 +75,7 @@ public class ForecastFragment extends Fragment
         switch (id)
         {
             case(R.id.action_referesh):
-                FetchWeatherTask fetchTask  = new FetchWeatherTask();
-                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
-                String location = settings.getString(getString(R.string.pref_location_key), "cairo");
-                fetchTask.execute(location);
+
                 return true;
 
             case (R.id.action_settings):
@@ -134,7 +131,7 @@ public class ForecastFragment extends Fragment
                 getActivity(),
                 R.layout.list_item_forecast,
                 R.id.list_item_forecast_textview,
-                dataList
+                new ArrayList<String>()
                 );
 
 
@@ -158,6 +155,21 @@ public class ForecastFragment extends Fragment
         return view;
     }
 
+    private void updateWeather()
+    {
+        FetchWeatherTask fetchTask  = new FetchWeatherTask();
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String location = settings.getString(getString(R.string.pref_location_key), "cairo");
+        fetchTask.execute(location);
+    }
+
+
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        updateWeather();
+    }
 
     class FetchWeatherTask extends AsyncTask<String, Void, String[]>
     {
