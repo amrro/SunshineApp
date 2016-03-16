@@ -1,9 +1,11 @@
 package com.amro.weatherforecast;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
@@ -74,8 +76,9 @@ public class ForecastFragment extends Fragment
         {
             case(R.id.action_referesh):
                 FetchWeatherTask fetchTask  = new FetchWeatherTask();
-//              fetchTask.execute("94043");
-                fetchTask.execute("cairo");
+                SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
+                String location = settings.getString(getString(R.string.pref_location_key), "cairo");
+                fetchTask.execute(location);
                 return true;
 
             case (R.id.action_settings):
