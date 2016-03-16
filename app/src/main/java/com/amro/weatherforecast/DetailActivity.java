@@ -65,6 +65,8 @@ public class DetailActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings)
         {
+            Intent launchSettingsIntent = new Intent(getApplicationContext(), SettingsActivity.class );
+            startActivity(launchSettingsIntent);
             return true;
         }
 
