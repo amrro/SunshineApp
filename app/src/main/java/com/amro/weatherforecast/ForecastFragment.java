@@ -1,5 +1,6 @@
 package com.amro.weatherforecast;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,8 +17,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -129,8 +128,9 @@ public class ForecastFragment extends Fragment
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id)
                     {
-                        String message = ((TextView) view).getText().toString();
-                        Toast.makeText(getActivity(), message, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getContext(), DetailActivity.class)
+                                .putExtra(Intent.EXTRA_TEXT, forecastAdapter.getItem(position));
+                        startActivity(intent);
                     }
                 }
         );
@@ -184,8 +184,9 @@ public class ForecastFragment extends Fragment
                         .appendQueryParameter(API_KEY, myKey)
                         .build();
 
-                URL url = new URL(builderURI.toString());
+                Log.v("URI", builderURI.toString());
 
+                URL url = new URL(builderURI.toString());
                 // Create the request to OpenWeatherMap, and open the connection
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");

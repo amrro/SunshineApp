@@ -16,17 +16,14 @@
 
 package com.amro.weatherforecast;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 
 
-public class DetailActivity extends ActionBarActivity
+public class DetailActivity extends AppCompatActivity
 {
 
     @Override
@@ -34,12 +31,18 @@ public class DetailActivity extends ActionBarActivity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
+        Bundle dayDetails = new Bundle();
+        dayDetails.putString("dayDetails", getIntent().getStringExtra(Intent.EXTRA_TEXT));
+
         if (savedInstanceState == null)
         {
+            DetailActivityFragment detailFragment = new DetailActivityFragment();
+            detailFragment.setArguments(dayDetails);
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new PlaceholderFragment())
+                    .add(R.id.container, detailFragment)
                     .commit();
         }
+
     }
 
 
@@ -70,7 +73,7 @@ public class DetailActivity extends ActionBarActivity
 
     /**
      * A placeholder fragment containing a simple view.
-     */
+     *//*
     public static class PlaceholderFragment extends Fragment
     {
 
@@ -87,4 +90,5 @@ public class DetailActivity extends ActionBarActivity
             return rootView;
         }
     }
+    */
 }
