@@ -203,15 +203,18 @@ public class ForecastFragment extends Fragment
                 final String API_KEY    = "APPID";
 
                 String mode = "json";
-                String units = "metric";
                 String myKey = "eea052d407132bde75a5ae66e06cfd3b";
 
-
+                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
+                String unitType = sharedPreferences.getString(
+                        getString(R.string.pref_units_key),
+                        getString(R.string.pref_units_metric)
+                );
 
                 Uri builderURI = Uri.parse(BASE_URL).buildUpon()
                         .appendQueryParameter(QUERY_PARAM, params[0])           // adds the postal code.
                         .appendQueryParameter(QUERY_MODE, mode)                 // changes the mode to json.
-                        .appendQueryParameter(QUERY_UNIT, units)                // specifies the metric OR imperial.
+                        .appendQueryParameter(QUERY_UNIT, unitType)                // specifies the metric OR imperial.
                         .appendQueryParameter(QUERY_DAYS, Integer.toString(numDays))  // specifies number of days.
                         .appendQueryParameter(API_KEY, myKey)
                         .build();
