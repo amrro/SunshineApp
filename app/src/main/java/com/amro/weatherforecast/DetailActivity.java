@@ -26,6 +26,7 @@ import android.view.MenuItem;
 public class DetailActivity extends AppCompatActivity
 {
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -36,7 +37,7 @@ public class DetailActivity extends AppCompatActivity
 
         if (savedInstanceState == null)
         {
-            DetailActivityFragment detailFragment = new DetailActivityFragment();
+            DetailFragment detailFragment = new DetailFragment();
             detailFragment.setArguments(dayDetails);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, detailFragment)
