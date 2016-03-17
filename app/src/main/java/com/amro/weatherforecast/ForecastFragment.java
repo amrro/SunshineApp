@@ -32,6 +32,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 /**
@@ -41,10 +42,8 @@ public class ForecastFragment extends Fragment
 {
     ArrayAdapter<String> forecastAdapter;
     FetchWeatherTask fetchWeatherTask;
-    private SharedPreferences settings;
     // constructor:
-    public ForecastFragment() {
-    }
+    public ForecastFragment() {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState)
@@ -64,40 +63,29 @@ public class ForecastFragment extends Fragment
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
-
+        /*
+        if (id == R.id.action_referesh)
+        {
+            FetchWeatherTask fetchTask  = new FetchWeatherTask();
+//          fetchTask.execute("94043");
+            fetchTask.execute("cairo");
+            return true;
+        }
+        */
         switch (id)
         {
-            case R.id.action_referesh:
-                updateWeather();
+            case(R.id.action_referesh):
+
                 return true;
 
-            case R.id.action_map:
-                openInMap();
-                return true;
-
-            case R.id.action_settings:
+            case (R.id.action_settings):
                 Intent launchSettings = new Intent(getContext(), SettingsActivity.class);
                 startActivity(launchSettings);
-                return true;
+                break;
         }
 
+        /// Why??
         return super.onOptionsItemSelected(item);
-    }
-
-    private void openInMap()
-    {
-        settings = PreferenceManager.getDefaultSharedPreferences(getContext());
-        String location = settings.getString(getString(R.string.pref_location_key),
-                getString(R.string.pref_location_key_default));
-
-        Uri geoLocation = Uri.parse("geo:0,0?").buildUpon()
-                               .appendQueryParameter("q", location)
-                               .build();
-        Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoLocation);
-        if (mapIntent.resolveActivity(getContext().getPackageManager()) == null)
-            startActivity(mapIntent);
-        else
-            Log.d(FetchWeatherTask.class.getSimpleName(), "no receiving app installed");
     }
 
 
@@ -106,12 +94,47 @@ public class ForecastFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
+        String[] fakeData = new String[]{
+                "Today - Sunny - 35/30"
+                , "Tomorrow - Rainy - 30/20"
+                , "Sat   - Cloudy - 20/15"
+                , "Sun- Sunny - 35/30"
+                , "Mon - Rainy - 30/20"
+                , "Thru   - Cloudy - 20/15"
+        };
+
+        /*//measuring time:
+        long start = System.currentTimeMillis();
+        fetchWeatherTask = new FetchWeatherTask();
+
+        String[] directData = new String[0];
+        try
+        {
+            directData = fetchWeatherTask.execute("Cairo").get();
+        }
+        catch (InterruptedException e)
+        {
+            e.printStackTrace();
+        }
+        catch (ExecutionException e)
+        {
+            e.printStackTrace();
+        }
+
+        // end time:
+        long end = System.currentTimeMillis();
+        Log.i("time", (end - start) / 1000 + "");
+        */
+
+        ArrayList<String> dataList = new ArrayList<>(Arrays.asList(fakeData));
         forecastAdapter = new ArrayAdapter<String>(
                 getActivity(),
                 R.layout.list_item_forecast,
                 R.id.list_item_forecast_textview,
                 new ArrayList<String>()
                 );
+
+
 
         ListView list = (ListView) view.findViewById(R.id.listview_forecast);
         list.setAdapter(forecastAdapter);
@@ -135,12 +158,10 @@ public class ForecastFragment extends Fragment
     private void updateWeather()
     {
         FetchWeatherTask fetchTask  = new FetchWeatherTask();
-        settings = PreferenceManager.getDefaultSharedPreferences(getContext());
+        SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(getActivity());
         String location = settings.getString(getString(R.string.pref_location_key), "cairo");
         fetchTask.execute(location);
     }
-
-
 
 
     @Override
@@ -182,22 +203,20 @@ public class ForecastFragment extends Fragment
                 final String API_KEY    = "APPID";
 
                 String mode = "json";
-
-                SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
-                String unitType = sharedPreferences.getString(
-                        getString(R.string.pref_units_key),
-                        getString(R.string.pref_units_metric)
-                );
-
+                String units = "metric";
                 String myKey = "eea052d407132bde75a5ae66e06cfd3b";
+
+
 
                 Uri builderURI = Uri.parse(BASE_URL).buildUpon()
                         .appendQueryParameter(QUERY_PARAM, params[0])           // adds the postal code.
                         .appendQueryParameter(QUERY_MODE, mode)                 // changes the mode to json.
-                        .appendQueryParameter(QUERY_UNIT, unitType )                // specifies the metric OR imperial.
+                        .appendQueryParameter(QUERY_UNIT, units)                // specifies the metric OR imperial.
                         .appendQueryParameter(QUERY_DAYS, Integer.toString(numDays))  // specifies number of days.
                         .appendQueryParameter(API_KEY, myKey)
                         .build();
+
+                Log.v("URI", builderURI.toString());
 
                 URL url = new URL(builderURI.toString());
                 // Create the request to OpenWeatherMap, and open the connection

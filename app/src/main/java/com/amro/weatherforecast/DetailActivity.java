@@ -18,12 +18,12 @@ package com.amro.weatherforecast;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class DetailActivity extends ActionBarActivity
+public class DetailActivity extends AppCompatActivity
 {
 
     @Override
@@ -36,7 +36,7 @@ public class DetailActivity extends ActionBarActivity
 
         if (savedInstanceState == null)
         {
-            DetailFragment detailFragment = new DetailFragment();
+            DetailActivityFragment detailFragment = new DetailActivityFragment();
             detailFragment.setArguments(dayDetails);
             getSupportFragmentManager().beginTransaction()
                     .add(R.id.container, detailFragment)
@@ -50,10 +50,8 @@ public class DetailActivity extends ActionBarActivity
     public boolean onCreateOptionsMenu(Menu menu)
     {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.detailfragment, menu);
-
-
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_detail, menu);
+        return true;
     }
 
     @Override
