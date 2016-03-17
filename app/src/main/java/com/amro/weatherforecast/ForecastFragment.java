@@ -67,17 +67,37 @@ public class ForecastFragment extends Fragment
 
         switch (id)
         {
-            case(R.id.action_referesh):
+            case R.id.action_referesh:
                 updateWeather();
                 return true;
 
-            case (R.id.action_settings):
+            case R.id.action_map:
+                openInMap();
+                return true;
+
+            case R.id.action_settings:
                 Intent launchSettings = new Intent(getContext(), SettingsActivity.class);
                 startActivity(launchSettings);
-                break;
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openInMap()
+    {
+        settings = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String location = settings.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_key_default));
+
+        Uri geoLocation = Uri.parse("geo:0,0?").buildUpon()
+                               .appendQueryParameter("q", location)
+                               .build();
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, geoLocation);
+        if (mapIntent.resolveActivity(getContext().getPackageManager()) == null)
+            startActivity(mapIntent);
+        else
+            Log.d(FetchWeatherTask.class.getSimpleName(), "no receiving app installed");
     }
 
 
@@ -121,6 +141,8 @@ public class ForecastFragment extends Fragment
     }
 
 
+
+
     @Override
     public void onStart()
     {
@@ -162,16 +184,14 @@ public class ForecastFragment extends Fragment
                 String mode = "json";
 
                 settings = PreferenceManager.getDefaultSharedPreferences(getContext());
-                int unitsChoosen = Integer.parseInt(settings.getString(getString(R.string.pref_unit_key), "0"));
+                int unit = Integer.parseInt(settings.getString(getString(R.string.pref_unit_key), "0"));
 
                 String myKey = "eea052d407132bde75a5ae66e06cfd3b";
-
-
 
                 Uri builderURI = Uri.parse(BASE_URL).buildUpon()
                         .appendQueryParameter(QUERY_PARAM, params[0])           // adds the postal code.
                         .appendQueryParameter(QUERY_MODE, mode)                 // changes the mode to json.
-                        .appendQueryParameter(QUERY_UNIT,unitsChoosen == 0? "metric" : "imperial" )                // specifies the metric OR imperial.
+                        .appendQueryParameter(QUERY_UNIT,unit == 0? "metric" : "imperial" )                // specifies the metric OR imperial.
                         .appendQueryParameter(QUERY_DAYS, Integer.toString(numDays))  // specifies number of days.
                         .appendQueryParameter(API_KEY, myKey)
                         .build();
