@@ -56,35 +56,18 @@ public class ForecastFragment extends Fragment
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
     {
         inflater.inflate(R.menu.forecastfragment, menu);
-        inflater.inflate(R.menu.menu_detail, menu);
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
-        /*
+
         if (id == R.id.action_referesh)
         {
-            FetchWeatherTask fetchTask  = new FetchWeatherTask();
-//          fetchTask.execute("94043");
-            fetchTask.execute("cairo");
+            updateWeather();
             return true;
         }
-        */
-        switch (id)
-        {
-            case(R.id.action_referesh):
-
-                return true;
-
-            case (R.id.action_settings):
-                Intent launchSettings = new Intent(getContext(), SettingsActivity.class);
-                startActivity(launchSettings);
-                break;
-        }
-
-        /// Why??
         return super.onOptionsItemSelected(item);
     }
 
