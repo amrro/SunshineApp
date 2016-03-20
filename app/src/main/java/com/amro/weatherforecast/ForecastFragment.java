@@ -32,7 +32,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 
 /**
@@ -77,47 +76,12 @@ public class ForecastFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.fragment_main, container, false);
 
-        String[] fakeData = new String[]{
-                "Today - Sunny - 35/30"
-                , "Tomorrow - Rainy - 30/20"
-                , "Sat   - Cloudy - 20/15"
-                , "Sun- Sunny - 35/30"
-                , "Mon - Rainy - 30/20"
-                , "Thru   - Cloudy - 20/15"
-        };
-
-        /*//measuring time:
-        long start = System.currentTimeMillis();
-        fetchWeatherTask = new FetchWeatherTask();
-
-        String[] directData = new String[0];
-        try
-        {
-            directData = fetchWeatherTask.execute("Cairo").get();
-        }
-        catch (InterruptedException e)
-        {
-            e.printStackTrace();
-        }
-        catch (ExecutionException e)
-        {
-            e.printStackTrace();
-        }
-
-        // end time:
-        long end = System.currentTimeMillis();
-        Log.i("time", (end - start) / 1000 + "");
-        */
-
-        ArrayList<String> dataList = new ArrayList<>(Arrays.asList(fakeData));
         forecastAdapter = new ArrayAdapter<String>(
                 getActivity(),
                 R.layout.list_item_forecast,
                 R.id.list_item_forecast_textview,
                 new ArrayList<String>()
                 );
-
-
 
         ListView list = (ListView) view.findViewById(R.id.listview_forecast);
         list.setAdapter(forecastAdapter);
